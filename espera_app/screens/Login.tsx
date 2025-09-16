@@ -71,7 +71,10 @@ const handleRegister = async () => {
 
                 <CustomButton
                     title="Registrarse"
-                    onPress={handleRegister}
+                    //Para pruebas, ingresar de una vez
+                    onPress={() => {navigation.navigate('HomeScreen', { email, password });
+                  }}
+                    //onPress={handleRegister}
                     variant="tertiary"
                 />
             </View>

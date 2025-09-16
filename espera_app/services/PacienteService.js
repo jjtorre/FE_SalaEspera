@@ -37,7 +37,8 @@ export const obtenerListaEspera = async () => {
     if (!response.ok) {
       throw new Error('Error al obtener la lista de espera');
     }
-    return await response.json(); // Array de pacientes ordenados por urgencia
+    const data = await response.json();
+   return data.lista_espera; // Extraer el array lista_espera
   } catch (error) {
     throw new Error(error.message);
   }

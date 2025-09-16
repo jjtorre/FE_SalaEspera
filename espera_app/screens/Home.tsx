@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import CustomButton from '../components/customButton';
 import { obtenerListaEspera } from '../services/PacienteService';
@@ -7,7 +8,7 @@ import { obtenerListaEspera } from '../services/PacienteService';
   type Paciente = {
   id:string,
   nombre: string;
-  fecha_nacimiento: Date;
+  fecha_nacimiento: string;
   sintomas: string;
   urgencia: number;
   expediente: string;
@@ -17,27 +18,43 @@ import { obtenerListaEspera } from '../services/PacienteService';
 
 export default function Home({ navigation, route }: any) {
 
-  const { email } = route.params;
+  const { email = 'Usuario', nuevoPaciente } = route.params || {};
 
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
 
   const [loading, setLoading] = useState(true);
 const [selectedId, setSelectedId] = useState<string | null>(null);
 
- useEffect(() => {
-    const fetchPacientes = async () => {
-      try {
-        const data = await obtenerListaEspera();
-        setPacientes(data);
-      } catch (error) {
-        // Manejo de error
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPacientes();
-  }, []);
+useEffect(() => {
+  const fetchPacientes = async () => {
+    try {
+      const data = await obtenerListaEspera();
+      console.log('Datos obtenidos:', data); // Para depurar
+      setPacientes(data);
+    } catch (error) {
+      console.error('Error al obtener pacientes:', error);
+      // Opcional: Mostrar mensaje en la UI
+      // alert('No se pudo cargar la lista de pacientes');
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchPacientes();
+}, []);
 
+// Actualizar lista cuando se agrega un nuevo paciente
+  useEffect(() => {
+    if (nuevoPaciente) {
+      setPacientes((prevPacientes) => {
+        // Evitar duplicados verificando el id
+        if (prevPacientes.some((p) => p.id === nuevoPaciente.id)) {
+          return prevPacientes;
+        }
+        return [...prevPacientes, nuevoPaciente];
+      });
+    }
+  }, [nuevoPaciente]);
+  
   const getColor = (urgencia:number) => {
     if (urgencia === 1) return '#FF0000'; // rojo
     if (urgencia === 2) return '#FFD600'; // amarillo

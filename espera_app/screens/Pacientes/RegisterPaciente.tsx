@@ -39,6 +39,8 @@ const handleSubmit = async () => {
 
     const result = await registrarPaciente(nuevoPaciente);
     Alert.alert('Éxito', result.mensaje);
+  navigation.navigate('HomeScreen', { nuevoPaciente })
+
   } catch (error) {
     let message = 'Ocurrió un error';
   if (error instanceof Error) {
