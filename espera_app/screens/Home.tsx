@@ -73,6 +73,10 @@ const handleCambiarUrgencia = async (pacienteId: string, nuevaUrgencia: number) 
     return '#00C853';
   };
 
+const handleRefresh = () => {
+    console.log('Refrescando datos manualmente');
+    fetchPacientes();
+  };
   // Función para calcular la edad a partir de la fecha de nacimiento
   const calcularEdad = (fechaNacimiento: string): number => {
     const hoy = new Date('2025-09-16'); // Fecha actual fija para consistencia
@@ -97,6 +101,8 @@ const handleCambiarUrgencia = async (pacienteId: string, nuevaUrgencia: number) 
       {selectedId === item.id && (
         <View style={styles.info}>
           <Text style={styles.nombre}>{item.nombre}</Text>
+          <Text style={styles.nombre}>%O: {item.oxigeno_sangre}</Text>
+                   <Text style={styles.nombre}>RC: {item.ritmo_cardiaco}</Text>
           <Text style={styles.sintomas}>{item.sintomas}</Text>
           <View style={styles.urgenciaContainer}>
             <Text style={styles.urgenciaLabel}>Cambiar Urgencia:</Text>
@@ -145,6 +151,11 @@ const handleCambiarUrgencia = async (pacienteId: string, nuevaUrgencia: number) 
         title="Ver Pacientes Atendidos Hoy"
         onPress={() => navigation.navigate('PacientesAtendidosHoy', { refresh: true })}
         style={styles.historialButton}
+      />
+      <CustomButton
+        title="Actualizar Datos"
+        onPress={handleRefresh}
+        style={styles.refreshButton}
       />
       {pacientes.length === 0 ? (
         <Text style={styles.noPacientes}>No hay pacientes en la lista de espera</Text>
@@ -245,4 +256,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
+  refreshButton: {
+    marginTop: 8,
+    backgroundColor: '#FF9800',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+  }
 });
