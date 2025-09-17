@@ -1,7 +1,3 @@
-import axios from 'axios';
-import { Alert } from 'react-native';
-
-
 
 //const API_URL_GET = 'http://192.168.0.112:3000/api/breakdowns/breakdowns';
 
@@ -42,4 +38,37 @@ export const obtenerListaEspera = async () => {
   } catch (error) {
     throw new Error(error.message);
   }
+};
+export const atenderPaciente = async (pacienteId) => {
+  const response = await fetch(`${URL}/pacientes/${pacienteId}/atender`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (!response.ok) {
+    throw new Error(`Error HTTP: ${response.status}`);
+  }
+  return response.json();
+};
+
+export const obtenerPacientesAtendidosHoy = async () => {
+  const response = await fetch(`${URL}/pacientes_atendidos_hoy`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (!response.ok) {
+    throw new Error(`Error HTTP: ${response.status}`);
+  }
+  return response.json();
+};
+
+export const actualizarUrgencia = async (pacienteId, urgencia) => {
+  const response = await fetch(`${URL}/pacientes/${pacienteId}/urgencia`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ urgencia }),
+  });
+  if (!response.ok) {
+    throw new Error(`Error HTTP: ${response.status}`);
+  }
+  return response.json();
 };

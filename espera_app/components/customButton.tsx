@@ -1,9 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet,StyleProp,ViewStyle } from 'react-native';
 
 type Props = {
   title: string;
   onPress: () => void;
+  style?: StyleProp<ViewStyle>;
   variant?: 'primary' | 'secondary' | 'tertiary';
 };
 
